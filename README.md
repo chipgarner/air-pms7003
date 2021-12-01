@@ -1,8 +1,14 @@
 # A minimalistic python interface for PMS7003 sensor
 
-The code reads PM values from serial port. Tested on Raspberry Pi, but it should work on any machine with Python and serial port.
+The code reads PM values from serial port. Tested on Raspberry Pi, 
+but it should work on any machine with Python and serial port.
 
-Device description: <https://aqicn.org/sensor/pms5003-7003/>
+Stolen from Device description: <https://aqicn.org/sensor/pms5003-7003/> woth many modifications.
+
+
+Systemd on Pi requires installing dependencies using sudo, otherwise they are under user pi and
+systemd runs on root and can't find them.
+
 
 ## Setup
 
