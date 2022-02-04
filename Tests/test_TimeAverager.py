@@ -6,7 +6,6 @@ class Average:
         self.answer = 0
         self.delta_time = 0
 
-
     def average(self, avg, delta_t):
         print("Average: " + str(avg) + " Timespan: " + str(delta_t))
         self.answer = avg
@@ -21,6 +20,7 @@ def test_averager():
 
     assert avg.answer == 12.345
     assert avg.delta_time > 0
+
 
 def test_averager_averages():
     avg = Average()
@@ -41,3 +41,8 @@ def test_averager_averages():
     assert avg.answer == 5.5
     assert avg.delta_time > 0
 
+
+def test_averager_function_none():
+    averager = Avg.TimeAverager(1, None)
+
+    averager.update_average(12.345)

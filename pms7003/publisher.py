@@ -4,9 +4,9 @@ import paho.mqtt.client as mqtt
 class Publisher:
     def __init__(self):
         self.mqttc = mqtt.Client()
-        self.mqttc.username_pw_set('GcV2Ha20W1QlylGAmACF', None)
+        self.mqttc.username_pw_set('yMGrQJPJqDSbuO3BHm546', None)
         # PiAir1 GPHs4tBNYCbLSOHeS6Nm
-        # piAir2 yMGrQJPJqDSbuO3BHm546
+        # piAir2 yMGrQJPJqDSbuO3BHm546   'GcV2Ha20W1QlylGAmACF'
         self.mqttc.connect("192.168.1.191", 1883, 60)
 
         self.mqttc.loop_start()
