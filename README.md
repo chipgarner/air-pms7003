@@ -3,7 +3,7 @@
 The code reads PM values from serial port. Tested on Raspberry Pi, 
 but it should work on any machine with Python and serial port.
 
-Stolen from Device description: <https://aqicn.org/sensor/pms5003-7003/> woth many modifications.
+Stolen from Device description: <https://aqicn.org/sensor/pms5003-7003/> with many modifications.
 
 
 Systemd on Pi requires installing dependencies using sudo, otherwise they are under user pi and
@@ -16,6 +16,16 @@ To install the driver, simply do:
 ```bash
 pip3 install pms7003
 ```
+pip3 install python-aqi
+pip3 install paho-mqtt
+
+The Pi file /boot/config.txt needs the line enable_uart=1. this is often the last line.
+Check for this with grep uart /boot/config.txt
+
+sudo raspi-config. shut off access via serial port
+
+publisher.py requires an mqtt server and proper credetnials. Just comment out the publisher in pms7003-runner.py 
+to run locally on the Pi.
 
 ## Usage example
 

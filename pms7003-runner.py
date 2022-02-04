@@ -1,11 +1,11 @@
+import serial
+
 from pms7003 import Pms7003Sensor, PmsSensorException
 from pms7003.publisher import Publisher
-import serial
 
 serial_port = '/dev/serial0'
 serial_device = serial.Serial(port=serial_port, baudrate=9600, bytesize=serial.EIGHTBITS,
-                             parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, timeout=2)
-
+                              parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, timeout=2)
 
 if __name__ == '__main__':
 
