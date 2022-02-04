@@ -21,6 +21,7 @@ if __name__ == '__main__':
         print('Delta t: ' + str(delta_t))
         message = str(labelled)
         pub.send_message(message)
+        print(message)
 
 
     while True:
