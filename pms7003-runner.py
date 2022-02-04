@@ -26,10 +26,11 @@ if __name__ == '__main__':
     while True:
         try:
             latest, latest_labelled = sensor.read()
-            if not started:
-                dict_averager = DictAverager(latest_labelled, 10, call_on_count)
-            else:
+            if started:
                 dict_averager.update(latest_labelled)
+            else:
+                dict_averager = DictAverager(latest_labelled, 10, call_on_count)
+                started = True
             print(latest_labelled)
             print(latest)
         except PmsSensorException:
