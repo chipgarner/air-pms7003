@@ -7,7 +7,7 @@ class Publisher:
         self.mqttc.username_pw_set('yMGrQJPJqDSbuO3BHm546', None)
         # PiAir1 GPHs4tBNYCbLSOHeS6Nm
         # piAir2 yMGrQJPJqDSbuO3BHm546   'GcV2Ha20W1QlylGAmACF'
-        self.mqttc.connect("192.168.1.191", 1883, 60)
+        self.mqttc.connect("mqtt.thingsboard.cloud", 1883, 60)
 
         self.mqttc.loop_start()
 

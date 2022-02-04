@@ -17,10 +17,10 @@ if __name__ == '__main__':
     started = False
 
 
-    def call_on_count(latest, delta_t):
-        message = str(latest)
-        pub.send_message(message)
+    def call_on_count(labelled, delta_t):
         print('Delta t: ' + str(delta_t))
+        message = str(labelled)
+        pub.send_message(message)
 
 
     while True:
