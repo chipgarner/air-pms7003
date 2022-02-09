@@ -30,7 +30,7 @@ if __name__ == '__main__':
             if started:
                 dict_averager.update(latest_labelled)
             else:
-                dict_averager = DictAverager(latest_labelled, 10, call_on_count)
+                dict_averager = DictAverager(latest_labelled, 11, call_on_count)
                 started = True
             print(latest_labelled)
             print(latest)

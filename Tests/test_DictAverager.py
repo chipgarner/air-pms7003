@@ -28,6 +28,18 @@ def test_it_averages():
     assert avg.delta_time == 0
 
 
+def test_it_averages_more():
+    avg = Average()
+    info = {'Big': 1, 'fat': 1, 'fake': 1}
+    dict_average = DictAverager(info, 5, avg.average)
+
+    for i in range(5):
+        info = {'Big': 1+i, 'fat': 1+i, 'fake': 1+i}
+        dict_average.update(info)
+
+    assert avg.answer == {'Big': 1.0, 'fake': 1.0, 'fat': 1.0}
+
+
 def test_missing_data_works():
     avg = Average()
     info = {'Big': 1, 'fat': 1, 'fake': 1}

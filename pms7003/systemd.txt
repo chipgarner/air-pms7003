@@ -6,7 +6,7 @@ After=syslog.target network-online.target
 
 [Service]
 Type=simple
-ExecStart=sudo /usr/bin/python3 /home/pi/Sensors/pms7003/pms7003-runner.py
+ExecStart=sudo /usr/bin/python3 /home/pi/Sensors/air-pms7003/pms7003-runner.py
 Restart=on-failure
 RestartSec=10
 KillMode=process

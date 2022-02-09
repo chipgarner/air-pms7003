@@ -13,9 +13,7 @@ systemd runs on root and can't find them.
 ## Setup
 
 To install the driver, simply do:
-```bash
-pip3 install pms7003
-```
+
 pip3 install python-aqi
 pip3 install paho-mqtt
 
