@@ -1,4 +1,4 @@
-from pms7003.TimeAverager import DictAverager
+from TimeAverager import DictAverager
 
 
 class Average:
@@ -37,7 +37,7 @@ def test_it_averages_more():
         info = {'Big': 1+i, 'fat': 1+i, 'fake': 1+i}
         dict_average.update(info)
 
-    assert avg.answer == {'Big': 1.0, 'fake': 1.0, 'fat': 1.0}
+    assert avg.answer == {'Big': 3.0, 'fake': 3.0, 'fat': 3.0}
 
 
 def test_missing_data_works():

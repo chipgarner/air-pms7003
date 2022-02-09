@@ -1,8 +1,8 @@
-import pms7003.publisher
+import publisher
 
 
 def test_publish():
-    pub = pms7003.publisher.Publisher()
+    pub = publisher.Publisher()
 
     message = '{"Test": 799, "Publishing": 99}'
     pub.send_message(message)

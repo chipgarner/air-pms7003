@@ -14,8 +14,8 @@ systemd runs on root and can't find them.
 
 To install the driver, simply do:
 
-pip3 install python-aqi
-pip3 install paho-mqtt
+sudo pip3 install python-aqi
+sudo pip3 install paho-mqtt
 
 The Pi file /boot/config.txt needs the line enable_uart=1. this is often the last line.
 Check for this with grep uart /boot/config.txt
@@ -25,44 +25,18 @@ sudo raspi-config. shut off access via serial port
 publisher.py requires an mqtt server and proper credetnials. Just comment out the publisher in pms7003-runner.py 
 to run locally on the Pi.
 
+To run on startup using systemd copy the contents of the systemd.txt to a .service file in the systemd directory, eg:
+sudo nano /etc/systemd/system/pms7003.service
+copy the file contents, save it and exit, ctrl o to save and ctrl x to exit the nano editor.
+
+Run it:
+sudo systemctl start pms7003
+Check if it's working:
+systemctl status pms7003
+If so enter the following to make it run on start up:
+sudo systemctl enable pms7003 
+
+If it doesn't work run sudo /usr/bin/python3 /home/pi/Sensors/air-pms7003/pms7003-runner.py to debug.
 ## Usage example
 
-```python
-from pms7003 import Pms7003Sensor, PmsSensorException
-
-if __name__ == '__main__':
-
-    sensor = Pms7003Sensor('/dev/serial0')
-
-    while True:
-        try:
-            print(sensor.read())
-        except PmsSensorException:
-            print('Connection problem')
-
-    sensor.close()
-```
-
-The read function has an option of returning values as a dict or OrderedDict.
-
-```python
-sensor.read(ordered=True)
-```
-
-## Usage example with threading:
-
-```python
-import time
-from pms7003 import Pms7003Thread
-
-if __name__ == "__main__":
-
-    with Pms7003Thread("/dev/serial0") as sensor:
-
-        while True:
-            print(sensor.measurements)
-            # We're free to do computation in main thread 
-            a = 2**32
-            time.sleep(1)
-```
-
+python3 pms7003-runner.py

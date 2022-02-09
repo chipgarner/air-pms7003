@@ -1,4 +1,4 @@
-import pms7003.TimeAverager as Avg
+import TimeAverager as Avg
 
 
 class Average:

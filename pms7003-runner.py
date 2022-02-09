@@ -1,8 +1,8 @@
 import serial
 
 from pms7003 import Pms7003Sensor, PmsSensorException
-from pms7003.TimeAverager import DictAverager
-from pms7003.publisher import Publisher
+from TimeAverager import DictAverager
+from publisher import Publisher
 import MiniDisplay
 
 serial_port = '/dev/serial0'
@@ -36,7 +36,6 @@ if __name__ == '__main__':
             else:
                 dict_averager = DictAverager(latest_labelled, 11, call_on_count)
                 started = True
-            print(latest_labelled)
             print(latest)
         except PmsSensorException:
             print('Wrong frame length or non-byte value, connection problem?')
