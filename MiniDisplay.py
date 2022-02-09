@@ -50,7 +50,7 @@ class MiniDisplay:
         # same directory as the python script!
         # Some other nice fonts to try: http://www.dafont.com/bitmap.php
     
-    def loop_me(self, text):
+    def display_text(self, text):
     
         # Draw a black filled box to clear the image.
         self.draw.rectangle((0, 0, self.width, self.height), outline=0, fill=0)
@@ -68,6 +68,6 @@ if __name__ == '__main__':
         cmd = 'cut -f 1 -d " " /proc/loadavg'
         CPU = subprocess.check_output(cmd, shell=True).decode("utf-8")
 
-        text = "CPU load: " + CPU
-        display.loop_me(text)
+        text = "CPU: " + CPU
+        display.display_text(text)
         time.sleep(0.1)

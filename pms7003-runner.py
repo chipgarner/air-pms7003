@@ -3,6 +3,7 @@ import serial
 from pms7003 import Pms7003Sensor, PmsSensorException
 from pms7003.TimeAverager import DictAverager
 from pms7003.publisher import Publisher
+import MiniDisplay
 
 serial_port = '/dev/serial0'
 serial_device = serial.Serial(port=serial_port, baudrate=9600, bytesize=serial.EIGHTBITS,
@@ -12,6 +13,7 @@ if __name__ == '__main__':
 
     sensor = Pms7003Sensor(serial_device)
     pub = Publisher()
+    display = MiniDisplay.MiniDisplay()
     dict_averager = None
 
     started = False
@@ -21,6 +23,8 @@ if __name__ == '__main__':
         print('Delta t: ' + str(delta_t))
         message = str(labelled)
         pub.send_message(message)
+        text = labelled['PM 2,5 EPA']
+        display.display_text(text)
         print(message)
 
 
@@ -37,5 +41,5 @@ if __name__ == '__main__':
         except PmsSensorException:
             print('Wrong frame length or non-byte value, connection problem?')
 
-    sensor.close()
-    pub.stop()
+    # sensor.close()
+    # pub.stop()
