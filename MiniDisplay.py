@@ -68,6 +68,6 @@ if __name__ == '__main__':
         cmd = 'cut -f 1 -d " " /proc/loadavg'
         CPU = subprocess.check_output(cmd, shell=True).decode("utf-8")
 
-        text = "CPU load: " + CPU
+        text = "CPU: " + CPU
         display.loop_me(text)
         time.sleep(0.1)
