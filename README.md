@@ -1,12 +1,13 @@
-# A minimalistic python interface for PMS7003 sensor
+# Portable Raspberry Pi air sensor with MQTT conectivity.
 
-The code reads PM values from serial port. Tested on Raspberry Pi, 
-but it should work on any machine with Python and serial port.
+The code reads PM values from a PMS7003 sensor via the serial port. Tested on Raspberry Pi, 
+but it should work on any machine with Python and serial port. It should also work with the PMS5003 sensor..  It would be
+a lot more portable if I had a Pi Zero. It also displays PMS 2.5 on an Adafruit PiOLED - 128x32 Mini OLED.
 
-Stolen from Device description: <https://aqicn.org/sensor/pms5003-7003/> with many modifications.
+It can publish MQTT messages and works with ThingsBoard.cloud
+Stolen from Device description: <https://aqicn.org/sensor/pms5003-7003/> and other sources with many modifications.
 
-
-Systemd on Pi requires installing dependencies using sudo, otherwise they are under user pi and
+Systemd on Pi (for headless startup of the program on power up) requires installing dependencies using sudo, otherwise they are under user pi and
 systemd runs on root and can't find them.
 
 
