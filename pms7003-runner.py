@@ -3,7 +3,7 @@ import serial
 from pms7003 import Pms7003Sensor, PmsSensorException
 from TimeAverager import DictAverager
 from publisher import Publisher
-import MiniDisplay
+#import MiniDisplay
 
 serial_port = '/dev/serial0'
 serial_device = serial.Serial(port=serial_port, baudrate=9600, bytesize=serial.EIGHTBITS,
@@ -13,7 +13,7 @@ if __name__ == '__main__':
 
     sensor = Pms7003Sensor(serial_device)
     pub = Publisher()
-    display = MiniDisplay.MiniDisplay()
+    # display = MiniDisplay.MiniDisplay()
     dict_averager = None
 
     started = False
@@ -24,7 +24,7 @@ if __name__ == '__main__':
         message = str(labelled)
         pub.send_message(message)
         text = 'PM25: ' + str(round(labelled['PM 2.5 EPA']))
-        display.display_text(text)
+        # display.display_text(text)
         print(message)
 
 
