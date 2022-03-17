@@ -5,7 +5,7 @@ but it should work on any machine with Python and serial port. It should also wo
 a lot more portable if I had a Pi Zero. 
 
 This program can also display PMS 2.5 on an Adafruit PiOLED - 128x32 Mini OLED (https://www.adafruit.com/product/3527). 
-If you are using the display see the instructions at the bottom below. This display uses I2C and 5 volt power; several similar 
+If you are using the display see the instructions below. This display uses I2C and 5 volt power; several similar 
 Pi compatible displays should work with minor modifictions.
 
 It can publish MQTT messages and works with ThingsBoard.cloud
@@ -32,7 +32,9 @@ publisher.py requires an mqtt server and proper credetnials. Just comment out th
 to run locally on the Pi.
 
 To run on startup using systemd copy the contents of the systemd.txt to a .service file in the systemd directory, eg:
+
 sudo nano /etc/systemd/system/pms7003.service
+
 copy the file contents, save it and exit, ctrl o to save and ctrl x to exit the nano editor.
 
 Run it:
@@ -41,7 +43,7 @@ sudo systemctl start pms7003
 
 Check if it's working:
 
-systemctl status pms7003
+sudo systemctl start pms7003
 
 If so enter the following to make it run on start up:
 
