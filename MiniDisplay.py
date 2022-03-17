@@ -69,5 +69,5 @@ if __name__ == '__main__':
         CPU = subprocess.check_output(cmd, shell=True).decode("utf-8")
 
         text = "CPU: " + CPU
-        display.loop_me(text)
+        display.display_text(text)
         time.sleep(0.1)
