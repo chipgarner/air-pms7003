@@ -31,6 +31,8 @@ sudo raspi-config. shut off access via serial port
 publisher.py requires an mqtt server and proper credetnials. Just comment out the publisher in pms7003-runner.py 
 to run locally on the Pi.
 
+The tests use Pytest. They should run on any machine with the dependencies installed. The tests are not very complete.
+
 To run on startup using systemd copy the contents of the systemd.txt to a .service file in the systemd directory, eg:
 
 sudo nano /etc/systemd/system/pms7003.service

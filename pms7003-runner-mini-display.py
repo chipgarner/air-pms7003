@@ -36,6 +36,9 @@ if __name__ == '__main__':
             else:
                 dict_averager = DictAverager(latest_labelled, 11, call_on_count)
                 started = True
+
+                text = 'PM25: ' + str(round(latest_labelled['PM 2.5 EPA']))
+                display.display_text(text)
             print(latest)
         except PmsSensorException:
             print('Wrong frame length or non-byte value, connection problem?')
