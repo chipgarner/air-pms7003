@@ -23,8 +23,6 @@ if __name__ == '__main__':
         print('Delta t: ' + str(delta_t))
         message = str(labelled)
         pub.send_message(message)
-        text = 'PM25: ' + str(round(labelled['PM 2.5 EPA']))
-        display.display_text(text)
         print(message)
 
 
