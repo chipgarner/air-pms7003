@@ -31,12 +31,12 @@ if __name__ == '__main__':
             latest, latest_labelled = sensor.read()
             if started:
                 dict_averager.update(latest_labelled)
-            else:
-                dict_averager = DictAverager(latest_labelled, 11, call_on_count)
-                started = True
 
                 text = 'PM25: ' + str(round(latest_labelled['PM 2.5 EPA']))
                 display.display_text(text)
+            else:
+                dict_averager = DictAverager(latest_labelled, 11, call_on_count)
+                started = True
             print(latest)
         except PmsSensorException:
             print('Wrong frame length or non-byte value, connection problem?')

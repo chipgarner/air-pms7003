@@ -17,7 +17,7 @@ systemd runs on root and can't find them.
 
 ## Setup
 
-To install the driver, simply do:
+To install the driver and MQTT library, simply do:
 
 sudo pip3 install python-aqi
 
@@ -26,7 +26,9 @@ sudo pip3 install paho-mqtt
 The Pi file /boot/config.txt needs the line enable_uart=1. this is often the last line.
 Check for this with grep uart /boot/config.txt
 
-sudo raspi-config. shut off access via serial port
+sudo raspi-config. Shut off access via serial port but leave port enabled.
+
+Raspberry Pi lite OS may need the serial library installed, sudo pip3 pyserial
 
 publisher.py requires an mqtt server and proper credetnials. Just comment out the publisher in pms7003-runner.py 
 to run locally on the Pi.
@@ -70,6 +72,7 @@ https://learn.adafruit.com/adafruit-pioled-128x32-mini-oled-for-raspberry-pi/usa
 ###Here is the abridged version:
 
 sudo pip3 install adafruit-circuitpython-ssd1306
+
 sudo apt-get install python3-pil
 
 Turn on I2C and install Blinka:
@@ -77,8 +80,11 @@ Turn on I2C and install Blinka:
 sudo pip3 install --upgrade setuptools
 
 cd ~
+
 sudo pip3 install --upgrade adafruit-python-shell
+
 wget https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/raspi-blinka.py
+
 sudo python3 raspi-blinka.py
 
 Reboot the Pi.
