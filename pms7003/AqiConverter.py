@@ -1,8 +1,9 @@
-import aqi
+import aqi  # AQI conversion library (sudo pip3 install python-aqi)
 
 
 class AqiConverter:
-    def concentratrion_to_aqi(self, pollutant, concentration):
+    @staticmethod
+    def concentration_to_aqi(pollutant, concentration):
         if '2.5' in pollutant:
             pollutant = aqi.POLLUTANT_PM25
         elif '10' in pollutant:

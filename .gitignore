@@ -108,5 +108,7 @@ __pycache__/
 .idea/
 .cache/
 
+Secrets.py
+
 
 
