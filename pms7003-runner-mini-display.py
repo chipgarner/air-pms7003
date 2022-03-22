@@ -1,7 +1,7 @@
 import serial
 
 from sense import Pms7003Sensor, PmsSensorException
-from TimeAverager import DictAverager
+from Averager import DictAverager
 from publish.publisher import Publisher
 from Secrets import PIAIR2
 from display import MiniDisplay

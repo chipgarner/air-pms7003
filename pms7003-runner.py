@@ -1,17 +1,22 @@
 import serial
-from sense import Pms7003Sensor, PmsSensorException
-from TimeAverager import DictAverager
+
+from Averager import DictAverager
+from Secrets import PIAIR1  # Credential string for MQTT on Thingsboard - don't put credentials in Git
 from publish.publisher import Publisher
-from Secrets import PIAIR1
-
-serial_port = '/dev/serial0'
-serial_device = serial.Serial(port=serial_port, baudrate=9600, bytesize=serial.EIGHTBITS,
-                              parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, timeout=2)
-
+from sense import Pms7003Sensor, PmsSensorException
 
 if __name__ == '__main__':
 
+    serial_port = '/dev/serial0'  # Raspberry Pi serial port
+    serial_device = None
+    try:
+        serial_device = serial.Serial(port=serial_port, baudrate=9600, bytesize=serial.EIGHTBITS,
+                                      parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, timeout=2)
+    except serial.SerialException:
+        print('Could not connect to the serial port')
+
     sensor = Pms7003Sensor(serial_device)
+
     pub = Publisher(PIAIR1)
     dict_averager = None
 
@@ -22,7 +27,6 @@ if __name__ == '__main__':
         print('Delta t: ' + str(delta_t))
         message = str(labelled)
         pub.send_message(message)
-        text = 'PM25: ' + str(round(labelled['PM 2.5 EPA']))
         print(message)
 
 
@@ -37,6 +41,7 @@ if __name__ == '__main__':
             print(latest)
         except PmsSensorException:
             print('Wrong frame length or non-byte value, connection problem?')
-
-    # sensor.close()
-    # pub.stop()
+        except Exception as ex:
+            print('Exception reading the sensor')
+            pub.stop()
+            sensor.close()

@@ -1,4 +1,4 @@
-import TimeAverager as Avg
+import Averager as Avg
 
 
 class Average:

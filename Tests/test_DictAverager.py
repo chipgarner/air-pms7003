@@ -1,4 +1,4 @@
-from TimeAverager import DictAverager
+from Averager import DictAverager
 
 
 class Average:
