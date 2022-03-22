@@ -1,4 +1,4 @@
-import pms7003.AqiConverter
+import sense.AqiConverter
 
 
 class PmsSensorException(Exception):
@@ -14,7 +14,7 @@ class Pms7003Sensor:
     def __init__(self, serial_device):
 
         self._serial = serial_device
-        self.converter = pms7003.AqiConverter.AqiConverter()
+        self.converter = sense.AqiConverter.AqiConverter()
 
         self.START_SEQ = bytes([0x42, 0x4d])
         self.FRAME_BYTES = 30

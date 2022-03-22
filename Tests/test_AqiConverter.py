@@ -1,4 +1,4 @@
-import pms7003.AqiConverter as Converter
+import sense.AqiConverter as Converter
 
 converter = Converter.AqiConverter()
 

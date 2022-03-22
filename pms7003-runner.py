@@ -1,7 +1,7 @@
 import serial
-from pms7003 import Pms7003Sensor, PmsSensorException
+from sense import Pms7003Sensor, PmsSensorException
 from TimeAverager import DictAverager
-from publisher import Publisher
+from publish.publisher import Publisher
 from Secrets import PIAIR1
 
 serial_port = '/dev/serial0'

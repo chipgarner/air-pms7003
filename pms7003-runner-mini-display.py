@@ -1,10 +1,10 @@
 import serial
 
-from pms7003 import Pms7003Sensor, PmsSensorException
+from sense import Pms7003Sensor, PmsSensorException
 from TimeAverager import DictAverager
-from publisher import Publisher
+from publish.publisher import Publisher
 from Secrets import PIAIR2
-import MiniDisplay
+from display import MiniDisplay
 
 serial_port = '/dev/serial0'
 serial_device = serial.Serial(port=serial_port, baudrate=9600, bytesize=serial.EIGHTBITS,
