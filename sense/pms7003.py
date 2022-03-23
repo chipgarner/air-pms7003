@@ -93,8 +93,7 @@ class Pms7003Sensor:
         values = self.parse_frame(frame)
 
         if self._valid_frame(frame, values):
-            unlabelled = values[1: self.NO_VALUES]
-            return unlabelled, self.get_labeled_values(values)
+            return self.get_labeled_values(values)
         else:
             raise PmsSensorException
 

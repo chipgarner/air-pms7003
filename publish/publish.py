@@ -1,11 +1,11 @@
 from publish.publisher import Publisher
-from Secrets import PIAIR1  # Credential string for MQTT on Thingsboard - don't put credentials in Git
+from Secrets import PIAIR2  # Credential string for MQTT on Thingsboard - don't put credentials in Git
 from Averager import DictAverager
 
 
 class Publish:
     def __init__(self):
-        self.publisher = Publisher(PIAIR1)
+        self.publisher = Publisher(PIAIR2)
 
         # This is to get the right dictionary keys stored in the averager.
         fake_data = {'1.0 ug/m3': 0, '2.5 ug/m3': 1, '10 ug/m3': 1, '0.3 n/dL': 0,
