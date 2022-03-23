@@ -1,4 +1,4 @@
-import sense
+import sense.pms7003
 
 
 class FakeSerial:
@@ -31,7 +31,7 @@ class FakeSerial:
 
 
 def test_parser():
-    sensor = sense.Pms7003Sensor(None)
+    sensor = sense.pms7003.Pms7003Sensor(None)
 
     frame = [0x42, 0x4d, 3, 4, 5, 6, 7, 8, -99, 10, 11, 12, 13, 14]
     parsed = sensor.parse_frame(frame)
@@ -48,13 +48,13 @@ def test_parser():
 
 def test_it_more():
     fake = FakeSerial()
-    sensor = sense.Pms7003Sensor(fake)
+    sensor = sense.pms7003.Pms7003Sensor(fake)
 
     frame = sensor._get_frame()
 
     try:
         parsed = sensor.parse_frame(frame)
-    except sense.PmsSensorException:
+    except sense.pms7003.PmsSensorException:
         print('Threw and caught the error.')
 
     print('')
@@ -71,14 +71,14 @@ def test_it_more():
 
 def test_throws_not_a_byte():
     fake = FakeSerial()
-    sensor = sense.Pms7003Sensor(fake)
+    sensor = sense.pms7003.Pms7003Sensor(fake)
 
     frame = sensor._get_frame()
     frame[17] = -20
 
     try:
         parsed = sensor._check_good_frame(frame)
-    except sense.PmsSensorException:
+    except sense.pms7003.PmsSensorException:
         print('Throw and caught the error.')
 
     frame[17] = 20  # Frame is good, continues inn loop
@@ -98,7 +98,7 @@ def test_throws_not_a_byte():
 
 def test_get_labeled_values():
     fake = FakeSerial()
-    sensor = sense.Pms7003Sensor(fake)
+    sensor = sense.pms7003.Pms7003Sensor(fake)
 
     frame = sensor._get_frame()
 

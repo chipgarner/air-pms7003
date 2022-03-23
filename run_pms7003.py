@@ -1,26 +1,35 @@
-import runmeinterface
-import serial
-from sense import Pms7003Sensor, PmsSensorException
+from sense.sensors import PmsSensor
+try:
+    from display.display import Display
+    display = True
+except ModuleNotFoundError:
+    display = False  # Assuming this means no display is installed
+from publish.publish import Publish
 
 
-class RunMePms7003(runmeinterface.RunMeInterface):
+class RunMePms7003:
     def __init__(self):
-        self.sensor = None
+        self.sensors = PmsSensor()
 
-    def init_sensors(self) -> bool:
+        if display:
+            self.display = Display()
+        else:
+            self.display = None
 
-        serial_port = '/dev/serial0'  # Raspberry Pi serial port
-        serial_device = None
-        try:
-            serial_device = serial.Serial(port=serial_port, baudrate=9600, bytesize=serial.EIGHTBITS,
-                                          parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, timeout=2)
-        except serial.SerialException:
-            print('Could not connect to the serial port')
-            return False
+        self.publish = Publish()
 
-        self.sensor = Pms7003Sensor(serial_device)
+        self.running = True
 
-        return True
+    def loop(self):
+        while self.running:
+            latest = self.sensors.get_latest()
+            if self.display is not None:
+                self.display.display(latest)
+            self.publish.publish(latest)
 
-    def get_latest_sensor_data(self) -> dict:
-        return self.sensor.read()
+        self.sensors.stop()
+
+
+if __name__ == '__main__':
+    runner = RunMePms7003()
+    runner.loop()
