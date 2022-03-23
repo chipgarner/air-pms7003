@@ -1,10 +1,13 @@
 from publish.publisher import Publisher
 from Secrets import PIAIR2  # Credential string for MQTT on Thingsboard - don't put credentials in Git
 from Averager import DictAverager
+import logging
 
 
 class Publish:
     def __init__(self):
+        self.logger = logging.getLogger(__name__)
+
         self.publisher = Publisher(PIAIR2)
 
         # This is to get the right dictionary keys stored in the averager.
@@ -17,7 +20,7 @@ class Publish:
         self.dict_averager.update(data)
 
     def call_on_count(self, labelled, delta_t):
-        print('Delta t: ' + str(delta_t))
+        self.logger.debug('Delta t: ' + str(delta_t))
         message = str(labelled)
         self.publisher.send_message(message)
-        print(message)
+        self.logger.debug(message)

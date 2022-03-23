@@ -1,8 +1,11 @@
 import paho.mqtt.client as mqtt
+import logging
 
 
 class Publisher:
     def __init__(self, access):
+        self.logger = logging.getLogger(__name__)
+
         self.mqttc = mqtt.Client()
         self.mqttc.username_pw_set(access, None)
         self.mqttc.connect("mqtt.thingsboard.cloud", 1883, 60)
@@ -14,7 +17,7 @@ class Publisher:
         try:
             infot.wait_for_publish()
         except RuntimeError:
-            print('Could not publish MQTT message - no internet?')
+            self.logger.exception('Could not publish MQTT message - no internet?')
 
     def stop(self):
         self.mqttc.disconnect()

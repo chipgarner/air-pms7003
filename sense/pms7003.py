@@ -1,4 +1,5 @@
 import sense.AqiConverter
+import logging
 
 
 class PmsSensorException(Exception):
@@ -12,6 +13,7 @@ class PmsSensorException(Exception):
 class Pms7003Sensor:
     # Send this class the serial device so we can fake it in testing
     def __init__(self, serial_device):
+        self.logger = logging.getLogger(__name__)
 
         self._serial = serial_device
         self.converter = sense.AqiConverter.AqiConverter()
@@ -47,17 +49,14 @@ class Pms7003Sensor:
             return self._check_good_frame(frame)
 
     def _check_good_frame(self, frame):
-        # for index, stuff in enumerate(frame): #Debug
-        #     if (index % 2) != 0:
-        #         print(int(index / 2), frame[index - 1], stuff)
-
         if len(frame) == self.FRAME_BYTES:
             for value in frame:
                 if value < 0 or value > 255:
-                    print('Error ' + str(value) + ' is not a byte.')
+                    self.logger.warning('Error ' + str(value) + ' is not a byte.')
                     raise PmsSensorException
             return frame
         else:
+            self.logger.warning('Wrong frame length')
             raise PmsSensorException
 
     @staticmethod
@@ -95,6 +94,7 @@ class Pms7003Sensor:
         if self._valid_frame(frame, values):
             return self.get_labeled_values(values)
         else:
+            self.logger.warning('Checksum failed')
             raise PmsSensorException
 
     def close(self):

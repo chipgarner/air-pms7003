@@ -1,4 +1,8 @@
+import logging
+
 import sense.pms7003
+
+logger = logging.getLogger(__name__)
 
 
 class FakeSerial:
@@ -46,16 +50,14 @@ def test_parser():
     assert parsed[4] == -25334  # It works for non-bytes
 
 
-def test_it_more():
+def test_it_more(caplog):
     fake = FakeSerial()
     sensor = sense.pms7003.Pms7003Sensor(fake)
 
     frame = sensor._get_frame()
 
-    try:
-        parsed = sensor.parse_frame(frame)
-    except sense.pms7003.PmsSensorException:
-        print('Threw and caught the error.')
+    parsed = sensor.parse_frame(frame)
+    assert '' == caplog.text
 
     print('')
     print(parsed[0:14])
@@ -69,7 +71,7 @@ def test_it_more():
     assert parsed[6] == 65535
 
 
-def test_throws_not_a_byte():
+def test_warning_not_a_byte(caplog):
     fake = FakeSerial()
     sensor = sense.pms7003.Pms7003Sensor(fake)
 
@@ -77,11 +79,12 @@ def test_throws_not_a_byte():
     frame[17] = -20
 
     try:
-        parsed = sensor._check_good_frame(frame)
+        sensor._check_good_frame(frame)
     except sense.pms7003.PmsSensorException:
         print('Throw and caught the error.')
+    assert '-20 is not a byte.' in caplog.text
 
-    frame[17] = 20  # Frame is good, continues inn loop
+    frame[17] = 20  # Frame is good, continues in loop and gets good data
     parsed = sensor.parse_frame(frame)
 
     print('')
@@ -107,4 +110,3 @@ def test_get_labeled_values():
     assert labelled == {'1.0 ug/m3': 0, '2.5 ug/m3': 1, '10 ug/m3': 1, '0.3 n/dL': 0,
                         '0.5 n/dL': 0, '1.0 n/dL': 255, '2.5 n/dL': 255, '5.0 n/dL': 0,
                         '10 n/dL': 255, 'PM 10 EPA': 1, 'PM 2.5 EPA': 4}
-

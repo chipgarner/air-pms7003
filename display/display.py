@@ -1,13 +1,16 @@
 from display.MiniDisplay import MiniDisplay
+import logging
 
 
 class Display:
     def __init__(self):
+        self.logger = logging.getLogger(__name__)
+
         try:
             self.mini_display = MiniDisplay()
-        except:
+        except:  # If your project is useless without the display don't catch these errors
             self.mini_display = None
-            print('Could not initialize display, just keep going')
+            self.logger.exception('Could not initialize display, just keep going without one.')
 
     def display(self, data: dict):
         if self.mini_display is not None:

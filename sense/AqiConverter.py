@@ -1,6 +1,6 @@
 import aqi  # AQI conversion library (sudo pip3 install python-aqi)
 
-
+#  US AQI computation
 class AqiConverter:
     @staticmethod
     def concentration_to_aqi(pollutant, concentration):
