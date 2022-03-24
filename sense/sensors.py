@@ -32,6 +32,8 @@ class PmsSensor(SensorsBase):
 
         self.sensor = pms7003.Pms7003Sensor(serial_device)
 
+        logger.info('PMS7003 sensor initialized')
+
     def get_latest(self):
         try:
             latest_data = self.sensor.read()

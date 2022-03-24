@@ -12,6 +12,8 @@ class Display:
             self.mini_display = None
             self.logger.exception('Could not initialize display, just keep going without one.')
 
+        self.logger.info('Mini display initialized.')
+
     def display(self, data: dict):
         if self.mini_display is not None:
             text = 'PM25: ' + str(round(data['PM 2.5 EPA']))

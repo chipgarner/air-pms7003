@@ -18,7 +18,7 @@ class RunMePms7003:
         format = '%(asctime)s %(name)s %(message)s'
         logging.basicConfig(format=format,
                             datefmt='%m/%d/%Y %I:%M:%S %p',
-                            level=logging.DEBUG)
+                            level=logging.INFO)
         self.logger = logging.getLogger()
 
         directory_path = os.path.dirname(__file__)
