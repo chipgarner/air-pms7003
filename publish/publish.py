@@ -20,7 +20,7 @@ class Publish:
         self.dict_averager.update(data)
 
     def call_on_count(self, labelled, delta_t):
-        self.logger.debug('Delta t: ' + str(delta_t))
+        self.logger.info('Delta t: ' + str(delta_t))
         message = str(labelled)
         self.publisher.send_message(message)
         self.logger.debug(message)

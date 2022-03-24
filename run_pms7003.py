@@ -1,4 +1,5 @@
 import logging
+import logging.handlers
 
 from sense.sensors import PmsSensor
 
@@ -13,10 +14,24 @@ from publish.publish import Publish
 
 class RunMePms7003:
     def __init__(self):
-        logging.basicConfig(format='%(asctime)s  %(name)s %(message)s',
+        format = '%(asctime)s %(name)s %(message)s'
+        logging.basicConfig(format=format,
                             datefmt='%m/%d/%Y %I:%M:%S %p',
                             level=logging.DEBUG)
         self.logger = logging.getLogger()
+
+        formatter = logging.Formatter(format, datefmt='%m/%d/%Y %I:%M:%S %p')
+        log_handler = logging.handlers.TimedRotatingFileHandler('info.log', when='D', interval=1,
+                                                                backupCount=5, utc=True)
+        log_handler.setLevel(logging.INFO)
+        log_handler.setFormatter(formatter)
+        self.logger.addHandler(log_handler)
+
+        warning_log_handler = logging.handlers.TimedRotatingFileHandler('warning.log', when='D', interval=1,
+                                                                        backupCount=5, utc=True)
+        warning_log_handler.setLevel(logging.WARNING)
+        warning_log_handler.setFormatter(formatter)
+        self.logger.addHandler(warning_log_handler)
 
         self.sensors = PmsSensor()
 
