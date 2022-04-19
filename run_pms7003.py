@@ -6,7 +6,6 @@ from sense.sensors import PmsSensor
 
 try:
     from display.display import Display
-
     display = True
 except ModuleNotFoundError:
     display = False  # Assuming this means no display is installed
@@ -42,6 +41,7 @@ class RunMePms7003:
         if display:
             self.display = Display()
         else:
+            self.logger.warning('Could not import display, assuming there is none.')
             self.display = None
 
         self.publish = Publish()

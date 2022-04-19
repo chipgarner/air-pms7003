@@ -11,7 +11,7 @@ class SensorsBase:
         pass
 
     def stop(self):
-        #  Override to stop any threads
+        #  Override to stop any threads, close [orts etc.
         pass
 
 

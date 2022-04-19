@@ -81,7 +81,7 @@ def test_warning_not_a_byte(caplog):
     try:
         sensor._check_good_frame(frame)
     except sense.pms7003.PmsSensorException:
-        print('Throw and caught the error.')
+        print('Threw and caught the error.')
     assert '-20 is not a byte.' in caplog.text
 
     frame[17] = 20  # Frame is good, continues in loop and gets good data
