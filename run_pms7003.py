@@ -1,6 +1,7 @@
 import logging
 import logging.handlers
 import os
+import time
 
 from sense.sensors import PmsSensor
 
@@ -54,7 +55,9 @@ class RunMePms7003:
             latest = self.sensors.get_latest()
             if self.display is not None:
                 self.display.display(latest)
-            self.publish.publish(latest)
+            time_stamped_latest = {"ts": time.time(), "values": latest}
+            print(time_stamped_latest)
+            self.publish.publish(time_stamped_latest)
 
         self.logger.error('Exited main loop')
         self.sensors.stop()

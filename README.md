@@ -37,25 +37,25 @@ The tests use Pytest. They should run on any machine with the dependencies insta
 
 To run on startup using systemd copy the contents of the systemd.txt to a .service file in the systemd directory, eg:
 
-sudo nano /etc/systemd/system/pms7003.service
+sudo nano /etc/systemd/system/yourair.service
 
-copy the file contents, save it and exit, ctrl o to save and ctrl x to exit the nano editor.
+Copy the file contents. Edit the ExeStart line, make sure it uses the full path to your python script. Save it and exit, ctrl o to save and ctrl x to exit the nano editor.
 
 Run it:
 
-sudo systemctl start pms7003
+sudo systemctl start yourair
 
 Check if it's working:
 
-sudo systemctl start pms7003
+sudo systemctl status yourair
 
 If so enter the following to make it run on start up:
 
-sudo systemctl enable pms7003 
+sudo systemctl enable yourair 
 
 If it doesn't work run the following to debug: 
 
-sudo /usr/bin/python3 /home/pi/Sensors/air-pms7003/pms7003-runner.py
+sudo /usr/bin/python3 ~/yourair/pms7003-runner.py
 
 
 ## Usage example

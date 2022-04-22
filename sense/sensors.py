@@ -11,7 +11,7 @@ class SensorsBase:
         pass
 
     def stop(self):
-        #  Override to stop any threads, close [orts etc.
+        #  Override to stop any threads, close ports etc.
         pass
 
 
@@ -41,6 +41,10 @@ class PmsSensor(SensorsBase):
             #  This should be recoverable, try once more
             time.sleep(1)
             latest_data = self.sensor.read()
+        except serial.serialutil.SerialException:
+            time.sleep(1)  # Maybe try again
+            latest_data = self.sensor.read()
+
         return latest_data
 
     def stop(self):
