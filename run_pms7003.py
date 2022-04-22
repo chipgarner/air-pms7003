@@ -6,6 +6,7 @@ from sense.sensors import PmsSensor
 
 try:
     from display.display import Display
+
     display = True
 except ModuleNotFoundError:
     display = False  # Assuming this means no display is installed
@@ -14,18 +15,18 @@ from publish.publish import Publish
 
 class RunMePms7003:
     def __init__(self):
-        format = '%(asctime)s %(name)s %(message)s'
-        logging.basicConfig(format=format,
+        log_format = '%(asctime)s %(name)s %(message)s'
+        logging.basicConfig(format=log_format,
                             datefmt='%m/%d/%Y %I:%M:%S %p',
                             level=logging.DEBUG)
         self.logger = logging.getLogger()
 
         directory_path = os.path.dirname(__file__)
         file_path = directory_path + '/info.log'
-        formatter = logging.Formatter(format, datefmt='%m/%d/%Y %I:%M:%S %p')
+        formatter = logging.Formatter(log_format, datefmt='%m/%d/%Y %I:%M:%S %p')
         log_handler = logging.handlers.TimedRotatingFileHandler(file_path, when='D', interval=1,
                                                                 backupCount=5, utc=True)
-        log_handler.setLevel(logging.DEBUG)
+        log_handler.setLevel(logging.INFO)
         log_handler.setFormatter(formatter)
         self.logger.addHandler(log_handler)
 
@@ -35,6 +36,13 @@ class RunMePms7003:
         warning_log_handler.setLevel(logging.WARNING)
         warning_log_handler.setFormatter(formatter)
         self.logger.addHandler(warning_log_handler)
+
+        file_path = directory_path + '/debug.log'
+        debug_log_handler = logging.handlers.TimedRotatingFileHandler(file_path, when='D', interval=1,
+                                                                      backupCount=5, utc=True)
+        debug_log_handler.setLevel(logging.DEBUG)
+        debug_log_handler.setFormatter(formatter)
+        self.logger.addHandler(debug_log_handler)
 
         self.sensors = PmsSensor()
 
