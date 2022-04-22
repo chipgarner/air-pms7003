@@ -55,9 +55,7 @@ class RunMePms7003:
             latest = self.sensors.get_latest()
             if self.display is not None:
                 self.display.display(latest)
-            time_stamped_latest = {"ts": round(time.time() * 1000), "values": latest}
-            print(time_stamped_latest)
-            self.publish.publish(time_stamped_latest)
+            self.publish.publish(latest)
 
         self.logger.error('Exited main loop')
         self.sensors.stop()

@@ -42,7 +42,7 @@ class DictAverager:
 
     def update(self, numbers_dict):
         done = False
-        for key in numbers_dict: # Update only the incoming dict in case an item is missing
+        for key in numbers_dict:  # Update only the incoming dict in case an item is missing
             if key in self.the_keys:
                 self.averagers[key].update_average(numbers_dict[key])
                 if self.averagers[key].count >= self.averagers[key].num:
@@ -50,11 +50,12 @@ class DictAverager:
 
         if done:
             results = {}
-            for key in self.the_keys: # Compute and report for the original dict.
+            for key in self.the_keys:  # Compute and report for the original dict.
                 average, delta_t = self.averagers[key].get_result()
                 results.update({key: average})
 
                 self.averagers[key].init()
 
+            time_stamped_results = {"ts": round(time.time() * 1000), "values": results}
+            print(time_stamped_results)
             self.on_average(results, round(delta_t))
-
