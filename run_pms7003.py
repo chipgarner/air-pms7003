@@ -22,13 +22,7 @@ class RunMePms7003:
         self.logger = logging.getLogger()
 
         directory_path = os.path.dirname(__file__)
-        file_path = directory_path + '/info.log'
         formatter = logging.Formatter(log_format, datefmt='%m/%d/%Y %I:%M:%S %p')
-        log_handler = logging.handlers.TimedRotatingFileHandler(file_path, when='D', interval=1,
-                                                                backupCount=5, utc=True)
-        log_handler.setLevel(logging.INFO)
-        log_handler.setFormatter(formatter)
-        self.logger.addHandler(log_handler)
 
         file_path = directory_path + '/warning.log'
         warning_log_handler = logging.handlers.TimedRotatingFileHandler(file_path, when='D', interval=1,
