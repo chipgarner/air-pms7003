@@ -1,7 +1,6 @@
 import logging
 import logging.handlers
 import os
-import time
 
 from sense.sensors import PmsSensor
 
@@ -18,7 +17,7 @@ class RunMePms7003:
         format = '%(asctime)s %(name)s %(message)s'
         logging.basicConfig(format=format,
                             datefmt='%m/%d/%Y %I:%M:%S %p',
-                            level=logging.INFO)
+                            level=logging.DEBUG)
         self.logger = logging.getLogger()
 
         directory_path = os.path.dirname(__file__)
@@ -26,11 +25,11 @@ class RunMePms7003:
         formatter = logging.Formatter(format, datefmt='%m/%d/%Y %I:%M:%S %p')
         log_handler = logging.handlers.TimedRotatingFileHandler(file_path, when='D', interval=1,
                                                                 backupCount=5, utc=True)
-        file_path = directory_path + '/warning.log'
-        log_handler.setLevel(logging.INFO)
+        log_handler.setLevel(logging.DEBUG)
         log_handler.setFormatter(formatter)
         self.logger.addHandler(log_handler)
 
+        file_path = directory_path + '/warning.log'
         warning_log_handler = logging.handlers.TimedRotatingFileHandler(file_path, when='D', interval=1,
                                                                         backupCount=5, utc=True)
         warning_log_handler.setLevel(logging.WARNING)
