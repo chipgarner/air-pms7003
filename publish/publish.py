@@ -1,13 +1,14 @@
-from Averager import DictAverager
 import logging
 import time
 
+from Averager import DictAverager
+
 
 class Publish:
-    def __init__(self, Publisher):
+    def __init__(self, publisher_class):
         self.logger = logging.getLogger(__name__)
 
-        self.publisher = Publisher
+        self.publisher = publisher_class
 
         # This is to get the right dictionary keys stored in the averager.
         fake_data = {'1.0 ug/m3': 0, '2.5 ug/m3': 1, '10 ug/m3': 1, '0.3 n/dL': 0,
@@ -17,13 +18,34 @@ class Publish:
 
         self.logger.info('MQTT publisher initialized.')
 
+        self.saving_missed = False
+        self.MISSED_CONN_FILE_NAME = 'data_not_sent.txt'
+
     def publish(self, data: dict):
         #  Don't publish all the data. Average N times and then publish.
         self.dict_averager.update(data)
 
     def publish_averaged_data(self, labelled, delta_t):
-        self.logger.info('Delta t: ' + str(delta_t))
         time_stamped_results = {"ts": round(time.time() * 1000), "values": labelled}
         message = str(time_stamped_results)
-        self.publisher.send_message(message)
+        worked = self.publisher.send_message(message)
+
+        if worked:
+            if self.saving_missed:
+                self.saving_missed = False
+                pass # send saved
+        else:
+            self.save_message(message)
+
+        self.logger.info('Delta t: ' + str(delta_t))
         self.logger.debug(message)
+
+    def save_message(self, message):
+        if self.saving_missed:
+            opener_type = "at"  # Appends to any existing data
+        else:
+            opener_type = "wt"  # Overwrites any existing data
+            self.saving_missed = True
+
+        with open(self.MISSED_CONN_FILE_NAME, opener_type) as a_file:
+            a_file.write(message + '\n')
