@@ -17,7 +17,7 @@ class Publisher:
         try:
             infot.wait_for_publish()
         except RuntimeError:
-            self.logger.exception('Could not publish MQTT message - no internet?')
+            self.logger.warning('Could not publish MQTT message - no internet.')
 
     def stop(self):
         self.mqttc.disconnect()

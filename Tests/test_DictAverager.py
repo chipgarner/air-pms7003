@@ -1,21 +1,21 @@
 from Averager import DictAverager
 
 
-class Average:
+class AverageCallback:
     def __init__(self):
         self.answer = {}
         self.delta_time = 0
 
-    def average(self, avg, delta_t):
+    def average_callback(self, avg, delta_t):
         print("Average: " + str(avg) + " Timespan: " + str(delta_t))
         self.answer = avg
         self.delta_time = delta_t
 
 
 def test_it_averages():
-    avg = Average()
+    avg = AverageCallback()
     info = {'Big': 1, 'fat': 22, 'fake': 7}
-    dict_average = DictAverager(info, 2, avg.average)
+    dict_average = DictAverager(info, 2, avg.average_callback)
 
     dict_average.update(info)
 
@@ -29,9 +29,9 @@ def test_it_averages():
 
 
 def test_it_averages_more():
-    avg = Average()
+    avg = AverageCallback()
     info = {'Big': 1, 'fat': 1, 'fake': 1}
-    dict_average = DictAverager(info, 5, avg.average)
+    dict_average = DictAverager(info, 5, avg.average_callback)
 
     for i in range(5):
         info = {'Big': 1+i, 'fat': 1+i, 'fake': 1+i}
@@ -41,9 +41,9 @@ def test_it_averages_more():
 
 
 def test_missing_data_works():
-    avg = Average()
+    avg = AverageCallback()
     info = {'Big': 1, 'fat': 1, 'fake': 1}
-    dict_average = DictAverager(info, 5, avg.average)
+    dict_average = DictAverager(info, 5, avg.average_callback)
 
     for i in range(4):
         info = {'Big': 1, 'fat': 1, 'fake': 1}
@@ -57,9 +57,9 @@ def test_missing_data_works():
 
 
 def test_extra_dict_key_ignored():
-    avg = Average()
+    avg = AverageCallback()
     info = {'Big': 1, 'fake': 7}
-    dict_average = DictAverager(info, 2, avg.average)
+    dict_average = DictAverager(info, 2, avg.average_callback)
 
     dict_average.update(info)
 
@@ -73,9 +73,9 @@ def test_extra_dict_key_ignored():
 
 
 def test_starts_over():
-    avg = Average()
+    avg = AverageCallback()
     info = {'Big': 1, 'fat': 1, 'fake': 1}
-    dict_average = DictAverager(info, 4, avg.average)
+    dict_average = DictAverager(info, 4, avg.average_callback)
 
     for i in range(4):
         info = {'Big': 1, 'fat': 1, 'fake': 1}

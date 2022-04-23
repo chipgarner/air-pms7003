@@ -1,6 +1,9 @@
 import logging
 import logging.handlers
 import os
+from publish.publisher import Publisher
+from Secrets import SECRET  # Credential string for MQTT on Thingsboard - don't put credentials in Git
+
 
 from sense.sensors import PmsSensor
 
@@ -46,7 +49,7 @@ class RunMePms7003:
             self.logger.warning('Could not import display, assuming there is none.')
             self.display = None
 
-        self.publish = Publish()
+        self.publish = Publish(Publisher(SECRET))
 
         self.running = True
 

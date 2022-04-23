@@ -56,5 +56,4 @@ class DictAverager:
 
                 self.averagers[key].init()
 
-            time_stamped_results = {"ts": round(time.time() * 1000), "values": results}
-            self.on_average(time_stamped_results, round(delta_t))
+            self.on_average(results, round(delta_t))
