@@ -50,7 +50,7 @@ class RunMePms7003:
             self.logger.warning('Could not import display, assuming there is none.')
             self.display = None
 
-        self.publish = Publish(Publisher(SECRET, check_internet_connection))
+        self.publish = Publish(Publisher(SECRET), check_internet_connection)
 
         self.running = True
 
