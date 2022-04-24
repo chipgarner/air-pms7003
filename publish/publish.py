@@ -33,7 +33,7 @@ class Publish:
         if worked:
             if self.saving_missed:
                 self.saving_missed = False
-                pass # send saved
+                self.send_missed_file()
         else:
             self.save_message(message)
 
@@ -49,3 +49,9 @@ class Publish:
 
         with open(self.MISSED_CONN_FILE_NAME, opener_type) as a_file:
             a_file.write(message + '\n')
+
+    def send_missed_file(self):
+        with open(self.MISSED_CONN_FILE_NAME) as f:
+            lines = f.readlines()
+
+        self.publisher.send_message(lines)
