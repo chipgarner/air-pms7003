@@ -2,6 +2,7 @@ import logging
 import logging.handlers
 import os
 from publish.publisher import Publisher
+from publish.check_internet import check_internet_connection
 from Secrets import SECRET  # Credential string for MQTT on Thingsboard - don't put credentials in Git
 
 
@@ -49,7 +50,7 @@ class RunMePms7003:
             self.logger.warning('Could not import display, assuming there is none.')
             self.display = None
 
-        self.publish = Publish(Publisher(SECRET))
+        self.publish = Publish(Publisher(SECRET, check_internet_connection))
 
         self.running = True
 
