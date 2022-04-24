@@ -38,7 +38,7 @@ class Publish:
             self.save_message(message)
 
         self.logger.info('Delta t: ' + str(delta_t))
-        self.logger.debug(message)
+        # self.logger.debug(message)
 
     def save_message(self, message):
         if self.saving_missed:
@@ -47,6 +47,7 @@ class Publish:
             opener_type = "wt"  # Overwrites any existing data
             self.saving_missed = True
 
+        self.logger.debug('Saving to file using: ' + opener_type)
         with open(self.MISSED_CONN_FILE_NAME, opener_type) as a_file:
             a_file.write(message + '\n')
 
