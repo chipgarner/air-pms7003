@@ -55,5 +55,5 @@ class Publish:
             lines = f.readlines()
 
         self.logger.debug('Sending lines from file')
-        self.publisher.send_message(str(lines))
+        self.publisher.send_message(lines)
         self.logger.debug(str(lines))
