@@ -54,4 +54,6 @@ class Publish:
         with open(self.MISSED_CONN_FILE_NAME) as f:
             lines = f.readlines()
 
-        self.publisher.send_message(lines)
+        self.logger.debug('Sending lines from file')
+        self.publisher.send_message(str(lines))
+        self.logger.debug(str(lines))
