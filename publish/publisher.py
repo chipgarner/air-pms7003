@@ -14,9 +14,9 @@ class Publisher:
 
     def send_message(self, message):
         infot = self.mqttc.publish('v1/devices/me/telemetry', message, 0)
-        self.logger.debug(infot)
         try:
             infot.wait_for_publish()
+            self.logger.debug('Publish returned')
             return True
         except RuntimeError:
             self.logger.warning('Could not publish MQTT message - no internet.')
