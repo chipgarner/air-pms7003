@@ -1,14 +1,21 @@
 import publish.publish
 import os
 
+
+class CheckInternet:
+    def __init__(self, return_value=True):
+        self.connected = return_value
+
+    def check_internet_connection(self):
+        return self.connected
+
 class FakePublisher:
-    def __init__(self, return_value=False):
+    def __init__(self):
         self.last_message = ''
-        self.return_value = return_value
 
     def send_message(self, message):
         self.last_message = message
-        return self.return_value  # False saves messages, true sends messages
+        return None  # Not using this
 
 
 class FakePublisherTrue:
@@ -27,7 +34,7 @@ def delete_file(file_name):
 
 def test_publish_averaged_data_format():
     fp = FakePublisher()
-    pub = publish.publish.Publish(fp)
+    pub = publish.publish.Publish(fp, CheckInternet().check_internet_connection)
 
     pub.publish_averaged_data({'Big': 2, 'fat': 11, 'fake': 9}, 7)
 
@@ -39,7 +46,7 @@ def test_publish_averaged_data_format():
 
 def test_starts_saving_when_internet_off():
     fp = FakePublisher()
-    pub = publish.publish.Publish(fp)
+    pub = publish.publish.Publish(fp, CheckInternet(False).check_internet_connection)
     delete_file(pub.MISSED_CONN_FILE_NAME)
 
     pub.publish_averaged_data({'Big': 2, 'fat': 11, 'fake': 9}, 7)
@@ -59,7 +66,7 @@ def test_starts_saving_when_internet_off():
 
 def test_no_file_save_with_internet():
     fp = FakePublisher()
-    pub = publish.publish.Publish(fp)
+    pub = publish.publish.Publish(fp, CheckInternet(False).check_internet_connection)
 
     pub.publish_averaged_data({'Big': 2, 'fat': 11, 'fake': 9}, 7)
 
@@ -67,8 +74,8 @@ def test_no_file_save_with_internet():
 
     assert file_size == 66  # A file was created and is this size
 
-    fp = FakePublisher(True)
-    pub = publish.publish.Publish(fp)
+    fp = FakePublisher()
+    pub = publish.publish.Publish(fp, CheckInternet().check_internet_connection)
 
     pub.publish_averaged_data({'Big': 2, 'fat': 17, 'fake': 9}, 7)
 
@@ -85,16 +92,16 @@ def test_no_file_save_with_internet():
 
 def test_sends_saved_file():
     fp = FakePublisher()
-    pub = publish.publish.Publish(fp)
+    ci = CheckInternet(False)
+    pub = publish.publish.Publish(fp, ci.check_internet_connection)
 
     # Save a file with two lines
     pub.publish_averaged_data({'Big': 2, 'fat': 11, 'fake': 9}, 7)
     pub.publish_averaged_data({'Big': 2, 'fat': 17, 'fake': 9}, 7)
 
-    fp.return_value = True # Next attempt finds internet
+    ci.connected = True # Next attempt finds internet
     pub.publish_averaged_data({'Big': 3, 'fat': 27, 'fake': 19}, 77)
 
-    assert "{'Big': 2, 'fat': 17, 'fake': 9}" in fp.last_message[1]  # Making sure a saved message was sent
-    assert len(fp.last_message) == 2
+    assert "{'Big': 2, 'fat': 17, 'fake': 9}" in fp.last_message  # Making sure a saved message was sent
 
     delete_file(pub.MISSED_CONN_FILE_NAME)

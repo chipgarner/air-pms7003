@@ -5,10 +5,11 @@ from Averager import DictAverager
 
 
 class Publish:
-    def __init__(self, publisher_class):
+    def __init__(self, publisher_class, check_internet):
         self.logger = logging.getLogger(__name__)
 
         self.publisher = publisher_class
+        self.check_internet = check_internet
 
         # This is to get the right dictionary keys stored in the averager.
         fake_data = {'1.0 ug/m3': 0, '2.5 ug/m3': 1, '10 ug/m3': 1, '0.3 n/dL': 0,
@@ -28,9 +29,10 @@ class Publish:
     def publish_averaged_data(self, labelled, delta_t):
         time_stamped_results = {"ts": round(time.time() * 1000), "values": labelled}
         message = str(time_stamped_results)
-        worked = self.publisher.send_message(message)
+        internet_connected = self.check_internet()
 
-        if worked:
+        if internet_connected:
+            self.publisher.send_message(message)
             if self.saving_missed:
                 self.saving_missed = False
                 self.send_missed_file()
@@ -55,6 +57,7 @@ class Publish:
         with open(self.MISSED_CONN_FILE_NAME) as f:
             lines = f.readlines()
 
-        self.logger.debug('Sending lines from file')
-        self.publisher.send_message(lines)
-        self.logger.debug(str(lines))
+        for line in lines:
+            self.logger.debug('Sending line from file')
+            self.publisher.send_message(line)
+            self.logger.debug(str(line))

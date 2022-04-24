@@ -1,5 +1,3 @@
-import time
-
 import paho.mqtt.client as mqtt
 import logging
 
@@ -14,14 +12,14 @@ class Publisher:
 
         self.mqttc.loop_start()
 
-    def send_message(self, message):
-        infot = self.mqttc.publish('v1/devices/me/telemetry', message, 0)
+    def send_message(self, a_message):
+        infot = self.mqttc.publish('v1/devices/me/telemetry', a_message, 0)
         try:
             infot.wait_for_publish(2)
             self.logger.debug('Publish returned, rc = : ' + str(infot.rc))
             print('Publish returned, rc = : ' + str(infot.rc))
             return True  # We have not really checked if it worked
-        except RuntimeError:
+        except RuntimeError:  # This is very intermittent
             self.logger.warning('Could not publish MQTT message - no internet.')
             print('Could not publish MQTT message - no internet.')
             return False
@@ -29,17 +27,16 @@ class Publisher:
     def stop(self):
         self.mqttc.disconnect()
 
-from Secrets import TEST_SECRET
-
-if __name__ == '__main__':
-    pub = Publisher(TEST_SECRET)
-    big = 0
-
-    while big < 100:
-        big += 1
-        message = {'Big': big, 'fat': 28, 'fake': 20}
-        pub.send_message(str(message))
-        time.sleep(5)
-
-    pub.stop()
-TEST_SECRET = 'VeQljVlS6kqmtj75e7ha'
+# For testing the mqtt library
+# from Secrets import TEST_SECRET
+# if __name__ == '__main__':
+    # pub = Publisher(TEST_SECRET)
+    # big = 0
+    #
+    # while big < 100:
+    #     big += 1
+    #     message = {'Big': big, 'fat': 28, 'fake': 20}
+    #     pub.send_message(str(message))
+    #     time.sleep(5)
+    #
+    # pub.stop()
