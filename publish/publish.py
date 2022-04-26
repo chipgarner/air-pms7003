@@ -20,7 +20,7 @@ class Publish:
         self.logger.info('MQTT publisher initialized.')
 
         self.saving_missed = False
-        self.MISSED_CONN_FILE_NAME = 'data_not_sent.txt'
+        self.MISSED_CONN_FILE_NAME = 'data_not_sent_test.txt'
 
     def publish(self, data: dict):
         #  Don't publish all the data. Average N times and then publish.

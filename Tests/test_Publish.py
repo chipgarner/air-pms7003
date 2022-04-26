@@ -1,5 +1,6 @@
 import publish.publish
 import os
+import time
 
 
 class CheckInternet:
@@ -100,7 +101,7 @@ def test_sends_saved_file():
     pub.publish_averaged_data({'Big': 2, 'fat': 17, 'fake': 9}, 7)
 
     ci.connected = True # Next attempt finds internet
-    pub.publish_averaged_data({'Big': 3, 'fat': 27, 'fake': 19}, 77)
+    pub.publish_averaged_data({"ts": round(time.time() * 1000), "values": {'Big': 3, 'fat': 27, 'fake': 19}})
 
     assert "{'Big': 2, 'fat': 17, 'fake': 9}" in fp.last_message  # Making sure a saved message was sent
 
