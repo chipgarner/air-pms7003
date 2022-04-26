@@ -26,7 +26,7 @@ class Publisher:
         except:
             cpuserial = "ERROR000000000"
 
-        self.logger.debug('Serial number: ' + cpuserial)
+        self.logger.info('Serial number: ' + cpuserial)
 
         return cpuserial
 
@@ -34,6 +34,10 @@ class Publisher:
         infot = self.mqttc.publish('v1/devices/me/telemetry', a_message, qos=1)
         try:
             infot.wait_for_publish(2)
+            self.logger.debug('Paho info =: ' + str(infot))
+            if infot.rc != 0: # Debugging
+                raise()
+
             return True  # We have not really checked if it worked
         except RuntimeError:  # This is very intermittent
             self.logger.warning('Could not publish MQTT message - no internet.')

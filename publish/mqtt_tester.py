@@ -1,4 +1,6 @@
 import logging
+import os
+import logging.handlers
 import publisher
 import time
 from Secrets import TEST_SECRET
@@ -10,13 +12,23 @@ if __name__ == '__main__':
                     level=logging.DEBUG)
     logger = logging.getLogger()
 
+    directory_path = os.path.dirname(__file__)
+    formatter = logging.Formatter(log_format, datefmt='%m/%d/%Y %I:%M:%S %p')
+    file_path = directory_path + '/debug.log'
+    debug_log_handler = logging.handlers.TimedRotatingFileHandler(file_path, when='D', interval=1,
+                                                                  backupCount=5, utc=True)
+    debug_log_handler.setLevel(logging.DEBUG)
+    debug_log_handler.setFormatter(formatter)
+    logger.addHandler(debug_log_handler)
+
+
     logger.debug('Test logger')
 
     pub = publisher.Publisher(TEST_SECRET)
 
     big = 2
 
-    for i in range(100):
+    for i in range(1000):
         delta = 3
         if i % 2 == 0:
             delta = -1

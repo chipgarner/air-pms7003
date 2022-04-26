@@ -9,10 +9,10 @@ from sense.sensors import PmsSensor
 
 try:
     from display.display import Display
-
     display = True
 except ModuleNotFoundError:
     display = False  # Assuming this means no display is installed
+
 from publish.publish import Publish
 
 
