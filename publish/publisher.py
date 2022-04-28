@@ -10,7 +10,10 @@ class Publisher:
         self.mqttc = mqtt.Client(client_id=self.getserial(), clean_session=False)
         self.mqttc.enable_logger(self.logger)
         self.mqttc.username_pw_set(access, None)
-        self.mqttc.connect("mqtt.thingsboard.cloud", 1883, 0)
+        try:
+            self.mqttc.connect("mqtt.thingsboard.cloud", 1883, 0)
+        except Exception as ex:
+            self.logger.error('Publisher could not connect. ' + str(ex))
 
         self.mqttc.loop_start()
 
@@ -36,11 +39,11 @@ class Publisher:
             infot.wait_for_publish(2)
             self.logger.debug('Paho info =: ' + str(infot))
             if infot.rc != 0: # Debugging
-                raise()
+                self.logger.error('mqttc publish returned rc = ' + str(infot.rc))
 
             return True  # We have not really checked if it worked
         except RuntimeError:  # This is very intermittent
-            self.logger.warning('Could not publish MQTT message - no internet.')
+            self.logger.warning('Could not publish MQTT message.')
             return False
 
     def stop(self):
