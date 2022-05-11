@@ -35,7 +35,9 @@ if __name__ == '__main__':
         big = big + delta
 
         message = {'Big': big, 'fat': 28, 'fake': 20}
-        pub.send_message(str(message))
+        time_in_seconds = round(time.time() * 1000)
+        time_stamped_message = {"ts": time_in_seconds - 50, "values": message}
+        pub.send_message(str(time_stamped_message))
         time.sleep(5)
 
     pub.stop()

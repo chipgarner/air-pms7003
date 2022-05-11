@@ -1,13 +1,17 @@
 import time
 import paho.mqtt.client as mqtt
 import logging
+import time
 
 
 class Publisher:
     def __init__(self, access):
         self.logger = logging.getLogger(__name__)
 
+        self.last_publish_time = time.time()
+
         self.mqttc = mqtt.Client(client_id=self.getserial(), clean_session=False)
+        self.mqttc.on_publish = self.on_publish
         self.mqttc.enable_logger(self.logger)
         self.mqttc.username_pw_set(access, None)
         try:
@@ -18,7 +22,7 @@ class Publisher:
         self.mqttc.loop_start()
 
     def getserial(self):
-    # Extract serial from cpuinfo file
+    # Extract Rapberry Pi serial number from cpuinfo file
         cpuserial = "0000000000001234"
         try:
             f = open('/proc/cpuinfo','r')
@@ -34,6 +38,16 @@ class Publisher:
         return cpuserial
 
     def send_message(self, a_message):
+        last_success_interval = time.time() - self.last_publish_time
+        if last_success_interval < 120:
+            return self.publish(a_message)
+
+        else:
+            self.logger.info('Not publishing, no internet?')
+            print(str(int(self.last_publish_time)))
+            return False
+
+    def publish(self, a_message):
         infot = self.mqttc.publish('v1/devices/me/telemetry', a_message, qos=1)
         try:
             infot.wait_for_publish(2)
@@ -45,6 +59,10 @@ class Publisher:
         except RuntimeError:  # This is very intermittent
             self.logger.warning('Could not publish MQTT message.')
             return False
+
+    def on_publish(self, client, data, message_id):
+        self.logger.debug('Published, id = ' + str(message_id))
+        self.last_publish_time = time.time()
 
     def stop(self):
         self.mqttc.disconnect()
