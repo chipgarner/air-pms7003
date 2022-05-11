@@ -39,12 +39,13 @@ class Publisher:
 
     def send_message(self, a_message):
         last_success_interval = time.time() - self.last_publish_time
-        if last_success_interval < 120:
+        if last_success_interval < 20:
             return self.publish(a_message)
 
         else:
             self.logger.info('Not publishing, no internet?')
-            print(str(int(self.last_publish_time)))
+            self.logger.debug('Not for ' + str(int(last_success_interval)) + ' seconds')
+            self.mqttc.reconnect()
             return False
 
     def publish(self, a_message):
