@@ -1,7 +1,7 @@
 import time
 import paho.mqtt.client as mqtt
 import logging
-import time
+import check_internet
 
 
 class Publisher:
@@ -55,22 +55,34 @@ class Publisher:
 
     def publish(self, a_message):
         infot = self.mqttc.publish('v1/devices/me/telemetry', a_message, qos=1)
-        try:
-            infot.wait_for_publish(2)
-            self.logger.debug('Paho info =: ' + str(infot))
-            if infot.rc != 0: # Debugging
-                self.logger.error('mqttc publish returned rc = ' + str(infot.rc))
-
-            return True  # We have not really checked if it worked
-        except RuntimeError:  # This is very intermittent
-            self.logger.warning('Could not publish MQTT message.')
+        self.logger.debug('Paho info before =: ' + str(infot))
+        if infot.rc == mqtt.MQTT_ERR_QUEUE_SIZE:
+            mqtt_connected = self.mqttc.is_connected()
+            internet = check_internet.check_internet_connection()
+            self.logger.debug('Connected: ' + str(mqtt_connected) + ' Internet: ' +str(internet))
+            if internet:
+                self.mqttc.reconnect()
             return False
-        except ValueError as ex:
-            self.logger.warning(str(ex))
-            if "ERR_QUEUE_SIZE" in str(ex):
+        else:
+
+            try:
+                infot.wait_for_publish(2)
+                self.logger.debug('Paho info =: ' + str(infot))
+                if infot.rc != 0: # Debugging
+                    self.logger.error('mqttc publish returned rc = ' + str(infot.rc))
+
+                return True  # We have not really checked if it worked
+            except RuntimeError:  # This is very intermittent
+                self.logger.warning('Could not publish MQTT message.')
                 return False
-            else:
-                raise(ex)
+            except ValueError as ex:
+                self.logger.warning(str(ex))
+                if "ERR_QUEUE_SIZE" in str(ex):
+                    if not self.mqttc.is_connected() and check_internet.check_internet_connection():
+                        self.mqttc.reconnect()
+                    return False
+                else:
+                    raise(ex)
 
     def on_publish(self, client, data, message_id):
         self.logger.debug('Published, id = ' + str(message_id))
