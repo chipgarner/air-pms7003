@@ -1,7 +1,7 @@
 import time
 import paho.mqtt.client as mqtt
 import logging
-import check_internet
+import publish.check_internet
 
 
 class Publisher:
@@ -58,7 +58,7 @@ class Publisher:
         self.logger.debug('Paho info before =: ' + str(infot))
         if infot.rc == mqtt.MQTT_ERR_QUEUE_SIZE:
             mqtt_connected = self.mqttc.is_connected()
-            internet = check_internet.check_internet_connection()
+            internet = publish.check_internet.check_internet_connection()
             self.logger.debug('Connected: ' + str(mqtt_connected) + ' Internet: ' +str(internet))
             if internet:
                 self.mqttc.reconnect()
