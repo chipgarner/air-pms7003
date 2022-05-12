@@ -12,6 +12,12 @@ class Publisher:
 
         self.mqttc = mqtt.Client(client_id=self.getserial(), clean_session=False)
         self.mqttc.on_publish = self.on_publish
+
+        #  Queued messages, e.g. while there is no internet, will collect and be sent to the broker
+        #  quickly. Most brokers limit incoming messages, e.g. 20 per second.
+        MAX_QUEUED_MESSAGES = 20
+        self.mqttc.max_queued_messages_set(MAX_QUEUED_MESSAGES)
+
         self.mqttc.enable_logger(self.logger)
         self.mqttc.username_pw_set(access, None)
         try:
@@ -39,13 +45,12 @@ class Publisher:
 
     def send_message(self, a_message):
         last_success_interval = time.time() - self.last_publish_time
-        if last_success_interval < 20:
+        if last_success_interval < 200000000:
             return self.publish(a_message)
 
         else:
             self.logger.info('Not publishing, no internet?')
             self.logger.debug('Not for ' + str(int(last_success_interval)) + ' seconds')
-            self.mqttc.reconnect()
             return False
 
     def publish(self, a_message):
@@ -60,6 +65,12 @@ class Publisher:
         except RuntimeError:  # This is very intermittent
             self.logger.warning('Could not publish MQTT message.')
             return False
+        except ValueError as ex:
+            self.logger.warning(str(ex))
+            if "ERR_QUEUE_SIZE" in str(ex):
+                return False
+            else:
+                raise(ex)
 
     def on_publish(self, client, data, message_id):
         self.logger.debug('Published, id = ' + str(message_id))
