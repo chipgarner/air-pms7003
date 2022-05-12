@@ -1,7 +1,7 @@
 import logging
 import os
 import logging.handlers
-import publisher
+import publish.publisher
 import time
 from Secrets import TEST_SECRET
 
@@ -21,10 +21,9 @@ if __name__ == '__main__':
     debug_log_handler.setFormatter(formatter)
     logger.addHandler(debug_log_handler)
 
-
     logger.debug('Test logger')
 
-    pub = publisher.Publisher(TEST_SECRET)
+    pub = publish.publisher.Publisher(TEST_SECRET)
 
     big = 2
 
