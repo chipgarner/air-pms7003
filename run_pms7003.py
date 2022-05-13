@@ -14,6 +14,7 @@ except ModuleNotFoundError:
     display = False  # Assuming this means no display is installed
 
 from publish.publish import Publish
+from save.save import Save
 
 
 class RunMePms7003:
@@ -50,6 +51,7 @@ class RunMePms7003:
             self.display = None
 
         self.publish = Publish(Publisher(SECRET))
+        self.save = Save()
 
         self.running = True
 
@@ -60,6 +62,7 @@ class RunMePms7003:
             if self.display is not None:
                 self.display.display(latest)
             self.publish.publish(latest)
+            self.save.save(latest)
 
         self.logger.error('Exited main loop')
         self.sensors.stop()

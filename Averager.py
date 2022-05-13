@@ -31,8 +31,17 @@ class TimeAverager:
         return avg, delta_t
 
 
+# This is to get the right dictionary keys stored in the averager.
+FAKE_DATA = {'1.0 ug/m3': 0, '2.5 ug/m3': 1, '10 ug/m3': 1, '0.3 n/dL': 0,
+             '0.5 n/dL': 0, '1.0 n/dL': 255, '2.5 n/dL': 255, '5.0 n/dL': 0,
+             '10 n/dL': 255, 'PM 10 EPA': 1, 'PM 2.5 EPA': 4}  # See test_pms7003.py
+
+
 class DictAverager:
     def __init__(self, numbers_dict, num, call_on_average):
+        if numbers_dict is None:
+            numbers_dict = FAKE_DATA
+
         self.on_average = call_on_average
 
         self.the_keys = numbers_dict.keys()
@@ -42,6 +51,7 @@ class DictAverager:
 
     def update(self, numbers_dict):
         done = False
+        delta_t = None
         for key in numbers_dict:  # Update only the incoming dict in case an item is missing
             if key in self.the_keys:
                 self.averagers[key].update_average(numbers_dict[key])
