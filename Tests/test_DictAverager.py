@@ -24,7 +24,7 @@ def test_it_averages():
     info = {'Big': 2, 'fat': 11, 'fake': 9}
     dict_average.update(info)
 
-    assert avg.answer == {'Big': 1.5, 'fat': 16.5, 'fake': 8.0}
+    assert avg.answer == {'Big': 2, 'fat': 16, 'fake': 8}
     assert avg.delta_time == 0
 
 
@@ -68,7 +68,7 @@ def test_extra_dict_key_ignored():
     info = {'Big': 2, 'fat': 11, 'fake': 9}
     dict_average.update(info)
 
-    assert avg.answer == {'Big': 1.5, 'fake': 8.0}
+    assert avg.answer == {'Big': 2, 'fake': 8}
     assert avg.delta_time == 0
 
 

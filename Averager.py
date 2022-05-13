@@ -62,7 +62,7 @@ class DictAverager:
             results = {}
             for key in self.the_keys:  # Compute and report for the original dict.
                 average, delta_t = self.averagers[key].get_result()
-                results.update({key: average})
+                results.update({key: round(average)})
 
                 self.averagers[key].init()
 
