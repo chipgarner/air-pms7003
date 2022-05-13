@@ -10,7 +10,7 @@ class Publish:
         self.publisher = publisher_instance
 
         fake_data = None
-        self.dict_averager = DictAverager(fake_data, 32, self.publish_averaged_data)
+        self.dict_averager = DictAverager(fake_data, 34, self.publish_averaged_data)
 
         self.logger.info('MQTT publisher initialized.')
 
