@@ -110,6 +110,7 @@ venv.bak/
 Secrets.py
 *.log
 *.log.*
+*.txt
 
 
 

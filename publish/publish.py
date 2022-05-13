@@ -26,3 +26,6 @@ class Publish:
         time_stamped_results = {"ts": round(time.time() * 1000), "values": labelled}
         message = str(time_stamped_results)
         self.publisher.send_message(message)
+
+        with open("air_data.txt", "a") as file:
+            file.write(message + '\n')
