@@ -5,6 +5,7 @@ import time
 
 MAX_LINES_IN_FILE = 3600
 
+
 class Saver:
     def __init__(self):
         self.logger = logging.getLogger(__name__)
@@ -23,6 +24,7 @@ class Saver:
 
     def check_file_size_start_new(self):
         self.lines_in_file += 1
+        self.logger.debug(str(self.lines_in_file) + ' lines saved')
         if self.lines_in_file >= MAX_LINES_IN_FILE:
             self.lines_in_file = 0
             self.abs_file_path = self.create_path()
