@@ -1,4 +1,5 @@
 import logging
+import time
 
 import paho.mqtt.client as mqtt
 
@@ -9,6 +10,11 @@ class Publisher:
     def __init__(self, access):
         self.logger = logging.getLogger(__name__)
 
+        self.mqtt_client = None
+        self.start_mqtt_client()
+        self.reconnect_tries = 0
+
+    def start_mqtt_client(self):
         self.mqtt_client = mqtt.Client(client_id=self.getserial(), clean_session=False)
         self.mqtt_client.on_publish = self.on_publish
 
@@ -51,9 +57,20 @@ class Publisher:
             internet = publish.check_internet.check_internet_connection()
             self.logger.debug('Publish error code, que max or no conn. Internet: ' + str(internet))
             if internet:
-                self.mqtt_client.reconnect()
+                if self.reconnect_tries < 5:
+                    self.mqtt_client.reconnect()
+                    self.reconnect_tries += 1
+                else:  #  This isn't working, start over. Broker disconnect?
+                    self.mqtt_client.disconnect()
+                    self.mqtt_client.loop_stop()
+                    time.sleep(1)
+                    self.mqtt_client = None
+                    self.start_mqtt_client()
+                    self.reconnect_tries = 0
+
             return False
         else:
+            self.reconnect_tries = 0
             return True
 
     def publish(self, a_message):
