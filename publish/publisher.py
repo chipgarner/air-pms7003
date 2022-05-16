@@ -10,6 +10,8 @@ class Publisher:
     def __init__(self, access):
         self.logger = logging.getLogger(__name__)
 
+        self.access = access
+
         self.mqtt_client = None
         self.start_mqtt_client()
         self.reconnect_tries = 0
@@ -24,7 +26,7 @@ class Publisher:
         self.mqtt_client.max_queued_messages_set(MAX_QUEUED_MESSAGES)
 
         self.mqtt_client.enable_logger(self.logger)
-        self.mqtt_client.username_pw_set(access, None)
+        self.mqtt_client.username_pw_set(self.access, None)
         try:
             self.mqtt_client.connect("mqtt.thingsboard.cloud", 1883, 0)
         except Exception as ex:
@@ -60,7 +62,7 @@ class Publisher:
                 if self.reconnect_tries < 5:
                     self.mqtt_client.reconnect()
                     self.reconnect_tries += 1
-                else:  #  This isn't working, start over. Broker disconnect?
+                else:  # This isn't working, start over. Broker disconnect?
                     self.mqtt_client.disconnect()
                     self.mqtt_client.loop_stop()
                     time.sleep(1)
