@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import time
@@ -30,6 +31,7 @@ class Saver:
             self.abs_file_path = self.create_path()
 
     def save_line(self, data_line):
+        data_line = json.dumps(data_line)
         self.check_file_size_start_new()
         with open(self.abs_file_path, "a") as file:
             file.write(data_line + '\n')
