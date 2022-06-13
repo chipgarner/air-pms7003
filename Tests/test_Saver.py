@@ -1,4 +1,7 @@
+import json
+
 import save.saver
+import save.save
 import os
 import time
 
@@ -70,3 +73,39 @@ def test_creates_new_file_over_max():
     assert saver.lines_in_file == 1
 
     remove_file(saver)
+
+
+def test_saves_dict_as_json():
+    saver = save.saver.Saver()
+
+    test_dict = {'Big': 2, 'fat': 11, 'fake': 9}
+
+    saver.save_line(test_dict)
+
+    f = open(saver.abs_file_path, "r")
+    lines = f.readlines()
+
+    assert lines[0] == '{"Big": 2, "fat": 11, "fake": 9}\n'
+
+    out_dict = json.loads(lines[0])
+    assert test_dict == out_dict
+
+    remove_file(saver)
+
+
+class FakeSaver:
+    def __init__(self):
+        self.res = None
+
+    def save_line(self, data_dict):
+        self.res = data_dict
+
+
+def test_save_averaged_data():
+    saver = FakeSaver()
+    save_class = save.save.Save(saver)
+
+    save_class.save_averaged_data({'goodness': 7}, 2)
+
+    assert saver.res['goodness'] == 7
+    assert type(saver.res['time']) is str

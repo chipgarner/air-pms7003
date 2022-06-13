@@ -1,14 +1,13 @@
-import save.saver
 import logging
 from Averager import DictAverager
 import time
 
 
 class Save:
-    def __init__(self):
+    def __init__(self, saver):
         self.logger = logging.getLogger(__name__)
 
-        self.saver = save.saver.Saver()
+        self.saver = saver
 
         fake_data = None
         self.dict_averager = DictAverager(fake_data, 11, self.save_averaged_data)
@@ -20,7 +19,6 @@ class Save:
         self.dict_averager.update(data)
 
     def save_averaged_data(self, labelled, _):
-        now = {"time": time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime())}
-        time_stamped_results = now.update(labelled)
-        # message = str(time_stamped_results)
+        time_stamped_results = {"time": time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime())}
+        time_stamped_results.update(labelled)
         self.saver.save_line(time_stamped_results)
