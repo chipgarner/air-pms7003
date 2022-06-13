@@ -21,4 +21,4 @@ class Save:
     def save_averaged_data(self, labelled, _):
         time_stamped_results = {"time": time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime())}
         time_stamped_results.update(labelled)
-        self.saver.save_line(time_stamped_results)
+        self.saver.save_dict_line(time_stamped_results)

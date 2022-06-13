@@ -30,7 +30,7 @@ class Saver:
             self.lines_in_file = 0
             self.abs_file_path = self.create_path()
 
-    def save_line(self, data_dict):
+    def save_dict_line(self, data_dict):
         data_dict = json.dumps(data_dict)
         self.check_file_size_start_new()
         with open(self.abs_file_path, "a") as file:

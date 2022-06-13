@@ -14,7 +14,7 @@ def remove_file(saver_class):
 def test_saves():
     saver = save.saver.Saver()
 
-    saver.save_line('wop')
+    saver.save_dict_line('wop')
 
     f = open(saver.abs_file_path, "r")
     lines = f.readlines()
@@ -29,7 +29,7 @@ def test_creates_new_file():
     saver = save.saver.Saver()
 
     for i in range(5):
-        saver.save_line('wop')
+        saver.save_dict_line('wop')
 
     f = open(saver.abs_file_path, "r")
     lines = f.readlines()
@@ -41,7 +41,7 @@ def test_creates_new_file():
 
     saver_two = save.saver.Saver()
 
-    saver_two.save_line('pop')
+    saver_two.save_dict_line('pop')
 
     f = open(saver_two.abs_file_path, "r")
     lines = f.readlines()
@@ -57,13 +57,13 @@ def test_creates_new_file_over_max():
     saver = save.saver.Saver()
 
     for i in range(6):
-        saver.save_line('plop')
+        saver.save_dict_line('plop')
 
     assert saver.lines_in_file == 6
 
     save.saver.MAX_LINES_IN_FILE = 3
     for i in range(5):
-        saver.save_line('scmop')
+        saver.save_dict_line('scmop')
 
     f = open(saver.abs_file_path, "r")
     lines = f.readlines()
@@ -80,7 +80,7 @@ def test_saves_dict_as_json():
 
     test_dict = {'Big': 2, 'fat': 11, 'fake': 9}
 
-    saver.save_line(test_dict)
+    saver.save_dict_line(test_dict)
 
     f = open(saver.abs_file_path, "r")
     lines = f.readlines()
@@ -97,7 +97,7 @@ class FakeSaver:
     def __init__(self):
         self.res = None
 
-    def save_line(self, data_dict):
+    def save_dict_line(self, data_dict):
         self.res = data_dict
 
 
