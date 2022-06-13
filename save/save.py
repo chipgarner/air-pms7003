@@ -16,10 +16,11 @@ class Save:
         self.logger.info('Data file saver initialized.')
 
     def save(self, data: dict):
-        #  Don't publish all the data. Average N times and then publish.
+        #  Don't save all the data. Average N times and then save.
         self.dict_averager.update(data)
 
-    def save_averaged_data(self, labelled, delta_t):
-        time_stamped_results = {"ts": round(time.time() * 1000), "values": labelled}
+    def save_averaged_data(self, labelled, _):
+        now = {"time": time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime())}
+        time_stamped_results = now.update(labelled)
         message = str(time_stamped_results)
         self.saver.save_line(message)
